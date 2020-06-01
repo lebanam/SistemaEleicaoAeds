@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <title>Sistema de eleição</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link href="./lib/css/uikit.css" rel="stylesheet" type="text/css"/>
+        <script src="lib/js/uikit.js" type="text/javascript"></script>
+    </head>
+
+    <body>
+
+        <nav class="uk-navbar uk-navbar-container uk-margin ">
+            <div class="uk-navbar-left">
+                <a class="uk-navbar-toggle" href="#">
+                    <span uk-navbar-toggle-icon></span> <span class="uk-margin-small-left">Menu</span>
+                </a>
+            </div>
+        </nav>
+        <div class="uk-container"> 
+            <form>
+                <fieldset class="uk-fieldset">
+
+                    <legend class="uk-legend">Cadastrar candidatos</legend>
+
+                    <div class="uk-margin">
+                        <label>Nome</label>
+                        <input class="uk-input" type="text" id="nome" placeholder="Nome do candidato">
+                    </div>
+                    <div class="uk-margin">
+                        <label>Numero</label>
+                        <input class="uk-input" type="text" id="numero" placeholder="Numero do candidato">
+                    </div>
+                    <div class="uk-margin">
+                        <label>Partido político</label>
+                        <input class="uk-input" type="text" id="partido_politico" placeholder="Partido politico do candidato">
+                    </div>
+                    <label>Cargo</label></br>
+                    <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+                        <label><input class="uk-radio" type="radio" name="cargo" value="prefeito" checked> Prefeito</label>
+                        <label><input class="uk-radio" type="radio" name="cargo" value="vereador"> Vereador</label>
+                    </div>
+                    <button class="uk-button uk-button-primary">Cadastrar candidato</button>
+
+                </fieldset>
+            </form>
+        </div>
+
+    </body>
+    <script>
+        document.querySelector('form').addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const body = {
+                nome: getValue('nome'),
+                numero: getValue('numero'),
+                partido_politico: getValue('partido_politico'),
+                cargo: getValueRadio('cargo')
+            };
+            const url = "/AppEleicaoAed/Candidatos";
+            const response = $.post(url, body, (e) => {
+                console.log(JSON.parse(e));
+            })
+                    .fail((err) => console.log("error", err));
+
+
+        });
+
+        function getValue(id) {
+            return document.getElementById(id).value;
+        }
+        function getValueRadio(name) {
+            var radios = document.getElementsByName(name);
+            for (var i = 0, length = radios.length; i < length; i++) {
+                if (radios[i].checked) {
+                    return radios[i].value;
+                    break;
+                }
+            }
+        }
+
+    </script>
+</html>
